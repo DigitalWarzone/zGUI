@@ -1,1 +1,0 @@
-mpackage = "MudletMapExplorer-1"
