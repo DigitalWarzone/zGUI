@@ -10,4 +10,3 @@ Download and install the zGUI.mpackage via Mudlets package manager.
 Known Issues:
 - deathcape spamming after reconnect if it was active when you last disconnected
 - allies doesn't show mutual
-- timer issue with battlerage use
