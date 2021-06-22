@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<AliasPackage>
+		<AliasGroup isActive="yes" isFolder="yes">
+			<name>zGUI</name>
+			<script></script>
+			<command></command>
+			<packageName></packageName>
+			<regex></regex>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZGUI)</name>
+				<script>zgui.modules = {}
+zgui.running = false
+zgui.zStartup()</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zgui$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZGUIS) zGUI Size</name>
+				<script>--------------------------------------------------------------------
+
+  zgui.chatSize = 8
+
+  zgui.loggerSize = 8
+  zgui.promptSize = 6
+  zgui.goldSize = 14
+
+  zgui.defenceSize = 9
+  zgui.afflictionSize = 6
+  zgui.targetAffsSize = 6
+  zgui.targetListSize = 8
+  zgui.enemySize = 9
+  zgui.allySize = 9
+
+  zgui.roomDenizensSize = 6
+  zgui.roomItemsSize = 9
+  zgui.roomPlayersSize = 9
+
+  zgui.mapSize = 9
+
+--------------------------------------------------------------------
+ setFontSize("All", zgui.chatSize)
+ setFontSize("City", zgui.chatSize)
+ setFontSize("House", zgui.chatSize)
+ setFontSize("Order", zgui.chatSize)
+ setFontSize("Party", zgui.chatSize)
+ setFontSize("Clans", zgui.chatSize)
+ setFontSize("Tells", zgui.chatSize)
+ setFontSize("Market", zgui.chatSize)
+ setFontSize("Misc", zgui.chatSize)
+ 
+ setFontSize("logDisplay", zgui.loggerSize)
+ setFontSize("myPrompt", zgui.promptSize) 
+ setFontSize("Gold Collection", zgui.goldSize)
+ 
+ setFontSize("defenceDisplay", zgui.defenceSize)
+ setFontSize("afflictionDisplay", zgui.afflictionSize) 
+ setFontSize("targetafflictionDisplay", zgui.targetAffsSize) 
+ setFontSize("targetListDisplay", zgui.targetListSize)
+
+ setFontSize("enemyDisplay", zgui.enemySize) 
+ setFontSize("allyDisplay", zgui.allySize)
+ 
+ setFontSize("roomDenizensDisplay", zgui.roomDenizensSize)
+ setFontSize("roomItemsDisplay", zgui.roomItemsSize)
+ setFontSize("roomPlayersDisplay", zgui.roomPlayersSize)  
+ 
+ setFontSize("Ocean", zgui.mapSize)
+ setFontSize("Wilderness", zgui.mapSize)
+--------------------------------------------------------------------</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zguis$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZSHOW) Show Windows</name>
+				<script>if matches[2] then
+  local showThis = string.title(matches[2])
+  if showThis == "All" then
+    for i=1, #zgui.modules, 1 do
+      zgui["build"..zgui.modules[i]]()
+    end 
+  elseif zgui["build"..showThis] then
+    zgui["build"..showThis]()
+    cecho("\n&lt;purple&gt; -Ran: zgui\.build"..showThis.."\(\) \n")
+  else
+    cecho("\n&lt;purple&gt; -No &lt;white&gt;\["..showThis.."\]&lt;purple&gt; Found for zgui\.build"..showThis.."\(\) check capitalization \n")
+  end
+else
+  cecho("\n&lt;purple&gt; --------------------------------------------------------")
+  cecho("\n&lt;purple&gt; -To display all windows type: &lt;white&gt;zshow all\n")
+  cecho("\n&lt;white&gt; Modules Installed:")
+  for i=1, #zgui.modules, 1 do
+    cecho("\n&lt;purple&gt; - &lt;SteelBlue&gt;"..zgui.modules[i])
+  end 
+  cecho("\n\n&lt;purple&gt; -To display a single window type:")
+  cecho("\n&lt;white&gt;    zshow Log")
+  cecho("\n&lt;white&gt;    zshow RoomItems")
+  cecho("\n&lt;purple&gt; --------------------------------------------------------\n")
+end</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zshow(?: (\w+))?$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZSTYLE) Style Windows</name>
+				<script>if matches[2] then
+  local showThis = string.lower(matches[2])
+  local foundIt = false
+  for k,v in pairs(zgui.styles) do
+    if k == showThis then
+      foundIt = true
+      zgui.useStyle = showThis
+      zgui.restyle()
+    end
+  end
+  if not foundIt then
+    cecho("\n&lt;purple&gt; -No &lt;white&gt;\["..showThis.."\]&lt;purple&gt; Found \n")
+  end
+else
+  cecho("\n&lt;purple&gt; --------------------------------------------------------")
+  cecho("\n&lt;purple&gt;      GUI Styler\n")
+  cecho("\n&lt;purple&gt; Styles Already Installed:")
+  for k,v in pairs(zgui.styles) do
+    cecho("\n&lt;white&gt; -"..k.."&lt;purple&gt; = "..zgui.styles[k].."&lt;gray&gt;\(\)")
+  end 
+  cecho("\n\n&lt;purple&gt; -To Switch Styles Type:")
+  cecho("\n&lt;white&gt;    zstyle greygroove")
+  cecho("\n&lt;white&gt;    zstyle greeninset")
+  cecho("\n&lt;purple&gt; --------------------------------------------------------\n")
+end</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zstyle(?: (\w+))?$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZFIX) Default a Window</name>
+				<script>if matches[2] then
+  local showThis = matches[2]
+  if zgui[matches[2]] and zgui[matches[2]].adjustable then
+    zgui[matches[2]].adjustable = Adjustable.Container:new({name="zgui."..matches[2]..".adjustable", autoLoad=false})
+    cecho("\n&lt;purple&gt; -NEW ADJUSTABLE CREATED:\n")
+    cecho("\n&lt;purple&gt; -&lt;red&gt;\[zgui."..showThis..".adjustable\]\n")    
+  elseif zgui[matches[2]] and zgui[matches[2]].window then
+    zgui[matches[2]].window = Adjustable.Container:new({name="zgui."..matches[2]..".window", autoLoad=false})    
+    cecho("\n&lt;purple&gt; -NEW WINDOW CREATED:\n")
+    cecho("\n&lt;purple&gt; -&lt;red&gt;\[zgui."..showThis..".window\]\n")        
+  else
+    cecho("\n&lt;purple&gt; -No Version of Either:\n")
+    cecho("\n&lt;purple&gt; -&lt;white&gt;\[zgui.&lt;red&gt;"..showThis.."&lt;white&gt;.adjustable\]\n")
+    cecho("\n&lt;purple&gt; -&lt;white&gt;\[zgui.&lt;red&gt;"..showThis.."&lt;white&gt;.window\]\n")
+  end
+else
+  cecho("\n&lt;purple&gt; --------------------------------------------------------")
+  cecho("\n&lt;purple&gt; -To type: &lt;white&gt;\n")
+  for k,v in pairs(zgui) do
+    if type(zgui[k]) == "table" then
+      if  zgui[k].window then
+        cecho("\n&lt;purple&gt; -&lt;white&gt;\[zgui.&lt;red&gt;"..k.."&lt;white&gt;.window\]")
+      end
+      if  zgui[k].adjustable then
+        cecho("\n&lt;purple&gt; -&lt;white&gt;\[zgui.&lt;red&gt;"..k.."&lt;white&gt;.adjustable\]")
+      end      
+    end
+  end
+  cecho("\n\n&lt;purple&gt; -To Fix a Window Type:")
+  cecho("\n&lt;white&gt;    zfix map")
+  cecho("\n&lt;white&gt;    zfix logger")
+  cecho("\n&lt;white&gt;    zfix targetaffliction")  
+  cecho("\n&lt;purple&gt; --------------------------------------------------------\n")
+end</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zfix(?: (\w+))?$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZCHAT) Toggle Chat Command Line</name>
+				<script>if not zgui.chat then zgui.buildChat() end
+
+if not zgui.chat.useCmdLine then
+ zgui.chat.useCmdLine = true
+ zgui.chat.allchat:enableCommandLine()
+ zgui.chat.citychat:enableCommandLine()
+ zgui.chat.orderchat:enableCommandLine()
+ zgui.chat.partychat:enableCommandLine()
+ zgui.chat.marketchat:enableCommandLine()
+ zgui.chat.housechat:enableCommandLine()
+else
+ zgui.chat.useCmdLine = false
+ zgui.chat.allchat:disableCommandLine()
+ zgui.chat.citychat:disableCommandLine()
+ zgui.chat.orderchat:disableCommandLine()
+ zgui.chat.partychat:disableCommandLine()
+ zgui.chat.marketchat:disableCommandLine()
+ zgui.chat.housechat:disableCommandLine()
+end</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zchat$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(ZHELP)</name>
+				<script>zgui.buildHelp()
+zgui.showHelp()</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^zhelp$</regex>
+			</Alias>
+			<AliasGroup isActive="no" isFolder="yes">
+				<name>zTrade</name>
+				<script></script>
+				<command></command>
+				<packageName></packageName>
+				<regex></regex>
+				<AliasGroup isActive="yes" isFolder="yes">
+					<name>Harvest / Gather</name>
+					<script></script>
+					<command></command>
+					<packageName></packageName>
+					<regex></regex>
+					<Alias isActive="yes" isFolder="no">
+						<name>(ZHARVEST) Setup zTrade Harvesting</name>
+						<script>zTrade.showHarvest()</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^zharvest$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>(ZGATHER) Setup zTrade Gathering</name>
+						<script>zTrade.showGather()</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^zgather$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>(ZHARV) Auto Harvest Toggle</name>
+						<script>if zTrade.autoHarvesting then
+  zTrade.autoHarvesting = false
+  zTrade.autoGathering = false
+  zTrade.echo(" Auto Harvest-Gather OFF")
+else
+  zTrade.autoHarvesting = true
+  zTrade.autoGathering = true
+  zTrade.echo(" Auto Harvest-Gather ON")
+end</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^zharv$</regex>
+					</Alias>
+					<Alias isActive="yes" isFolder="no">
+						<name>(zharvall)</name>
+						<script>zTrade.autoHarvest = {
+  "ash",
+  "bayberry",
+  "blueberry",
+  "bellwort",
+  "cohosh",
+  "bloodroot",
+  "burdock",
+  "echinacea",
+  "elm",
+  "ginseng",
+  "ginger",
+  "goldenseal",  
+  "hawthorn",
+  "kelp",  
+  "kola",  
+  "kuzu",  
+  "lobelia",
+  "myrrh",
+  "moss",
+  "pear",
+  "sileris",
+  "skullcap",
+  "slipper", 
+  "valerian",
+  "weed",   
+}</script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^zharvall$</regex>
+					</Alias>
+				</AliasGroup>
+				<AliasGroup isActive="yes" isFolder="yes">
+					<name>Conjuration</name>
+					<script></script>
+					<command></command>
+					<packageName></packageName>
+					<regex></regex>
+					<Alias isActive="yes" isFolder="no">
+						<name>(Zconj) Item</name>
+						<script>zTrade.conjuration.create(tonumber(matches[2]), matches[3]) </script>
+						<command></command>
+						<packageName></packageName>
+						<regex>^zconj (\d+) (\w+)$</regex>
+					</Alias>
+				</AliasGroup>
+			</AliasGroup>
+			<AliasGroup isActive="yes" isFolder="yes">
+				<name>MapExplorer</name>
+				<script></script>
+				<command></command>
+				<packageName></packageName>
+				<regex></regex>
+				<Alias isActive="yes" isFolder="no">
+					<name>explore-map</name>
+					<script>MapExporter:export()
+MapExporter:openUrl()
+</script>
+					<command></command>
+					<packageName></packageName>
+					<regex>^\/explore-map$</regex>
+				</Alias>
+				<Alias isActive="yes" isFolder="no">
+					<name>export-map</name>
+					<script>MapExporter:export()
+</script>
+					<command></command>
+					<packageName></packageName>
+					<regex>^\/export-map$</regex>
+				</Alias>
+				<Alias isActive="yes" isFolder="no">
+					<name>link-map</name>
+					<script>MapExporter:export()
+MapExporter:echoUrl()
+</script>
+					<command></command>
+					<packageName></packageName>
+					<regex>^\/link-map</regex>
+				</Alias>
+			</AliasGroup>
+		</AliasGroup>
+	</AliasPackage>
+</MudletPackage>
