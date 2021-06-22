@@ -1,4 +1,4 @@
-# zGUI
+# zGUI 4.0
 zGUI adjustable window system for Achaea 
 
 Download and install the zGUI.mpackage via Mudlets package manager.
