@@ -8,5 +8,5 @@ Download and install the zGUI.mpackage via Mudlets package manager.
 - 3rd: type: zhelp
 
 Known Issues:
-- deathcape spamming after reconnect if it was active when you last disconnected
+- deathcape creating a lua error after reconnect if it was active when you last disconnected
 - allies doesn't show mutual
