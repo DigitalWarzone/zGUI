@@ -5,7 +5,7 @@ Download and install the zGUI.mpackage via Mudlets package manager.
 
 - 1st: type: look
 - 2nd: choose download map
-- 3rd: type: zhelp
+- 3rd: quit and reconnect to update
 
 Known Issues:
 - deathcape creating a lua error after reconnect if it was active when you last disconnected
