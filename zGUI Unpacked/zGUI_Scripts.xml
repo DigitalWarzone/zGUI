@@ -1228,7 +1228,7 @@ end</script>
     color="black",
   },zgui.chat.Citycenter)     
   hideWindow("City")
-  zgui.chat.citychat:setBackgroundImage(getMudletHomeDir()..[[\zGUI\zGUI\Artwork\Wallpapers\slate.jpg]], "center")
+  zgui.chat.citychat:setBackgroundImage(getMudletHomeDir()..[[\zGUI\Artwork\Wallpapers\slate.jpg]], "center")
   
   zgui.chat.housechat = Geyser.MiniConsole:new({
     name = "House",
