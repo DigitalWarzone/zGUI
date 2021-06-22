@@ -4920,6 +4920,7 @@ end
   resetStopWatch("rage1watch")  
   startStopWatch("rage1watch")
   enableTimer("RageSkill1")
+  zgui.timers = zgui.timers or {}
   if zgui.timers.rage1timer then killTimer(zgui.timers.rage1timer) end
   zgui.timers.rage1timer = tempTimer(tonumber(zgui.RageTable[zgui.useRageClass][2][2]),
       [[

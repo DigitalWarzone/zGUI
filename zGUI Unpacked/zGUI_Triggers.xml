@@ -839,42 +839,6 @@ if zgui.cape then zgui.renewCape() end</script>
 				</Trigger>
 			</TriggerGroup>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>Chat Stuff</name>
-				<script></script>
-				<triggerType>0</triggerType>
-				<conditonLineDelta>0</conditonLineDelta>
-				<mStayOpen>0</mStayOpen>
-				<mCommand></mCommand>
-				<packageName></packageName>
-				<mFgColor>#ff0000</mFgColor>
-				<mBgColor>#ffff00</mBgColor>
-				<mSoundFile></mSoundFile>
-				<colorTriggerFgColor>#000000</colorTriggerFgColor>
-				<colorTriggerBgColor>#000000</colorTriggerBgColor>
-				<regexCodeList />
-				<regexCodePropertyList />
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Gag Info Dump</name>
-					<script>deleteFull()</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\(InfoDump\)\: (.*).$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>Battlerage</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2222,9 +2186,7 @@ deleteFull()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Vinecrack (3 druid)</name>
-						<script>zgui.rage3SkillUsed()
-cecho("\n"..zgui.myLinePrefix.."&lt;white&gt;-- Shield Broken\n")
-zgui.enemy.shield = false</script>
+						<script>zgui.rage3SkillUsed()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
