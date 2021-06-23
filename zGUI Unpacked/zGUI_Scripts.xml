@@ -5743,8 +5743,8 @@ end</script>
   zgui.help.window = Adjustable.Container:new({
     name = "zgui.help.window",
     x = 0, y = 0,
-    width = "50%",
-    height = "50%",  
+    width = "25%",
+    height = "70%",  
     adjLabelstyle = zgui.adjLabelstyle,
     buttonstyle=[[
       QLabel{ border-radius: 5px; background-color: rgba(140,140,140,100%);}
