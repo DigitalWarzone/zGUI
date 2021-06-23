@@ -5766,14 +5766,172 @@ end</script>
   --Create the help Console
   zgui.help.console = Geyser.MiniConsole:new({
     name = "helpDisplay",
-    x = 0, y = 0,
+    x = 0, y = "25%",
     autoWrap = true,
     scrollBar = true,
     width = "100%",
-    height = "100%",
+    height = "75%",
     color="black",
   },zgui.help.container)
 
+---------------------------------------------------------
+-- Window Style
+  zgui.help.windowStyle = Geyser.Label:new({
+    name="windowStyle",
+    x="1%",y="7%",
+    height="5%",width="98%",
+    nestable=true,
+    message="&lt;center&gt;Window Style: "..zgui.useStyle.."&lt;/center&gt;"
+  },zgui.help.container)
+
+  for k,v in pairs(zgui.styles) do
+    zgui.help.windowStyle[k] = zgui.help.windowStyle:addChild({
+      name=k.."WindowStyle",
+      x="1%",y="1%",
+      height=40,width=200,
+      layoutDir="BV",
+      flyOut=true,
+      message="&lt;center&gt;"..k.."&lt;/center&gt;"
+    })  
+    zgui.help.windowStyle[k]:setStyleSheet(zgui.adjLabelstyle)
+    zgui.help.windowStyle[k]:setClickCallback("zgui.styleSwap", k)    
+  end
+---------------------------------------------------------
+-- Toggle Darkmode
+  zgui.help.darkmode = Geyser.Label:new({
+    name="darkmode",
+    x="1%",y="13%",
+    height="5%",width="98%",
+    message="&lt;center&gt;Toggle Darkmode&lt;/center&gt;"
+  },zgui.help.container)
+  zgui.help.darkmode:setClickCallback("zgui.darkmodeToggle")
+  
+---------------------------------------------------------
+-- Map Explorer
+  zgui.help.mapExplorer = Geyser.Label:new({
+    name="mapExplorer",
+    x="1%",y="19%",
+    height="5%",width="98%",
+    message="&lt;center&gt;Map Explorer&lt;/center&gt;"
+  },zgui.help.container)
+  zgui.help.mapExplorer:setClickCallback("zgui.mapExplorer")
+    
+---------------------------------------------------------
+-- Close All Windows
+  zgui.help.closeAll = Geyser.Label:new({
+    name="closeAll",
+    x="35%",y="1%",
+    height="5%",width="31%",
+    message="&lt;center&gt;Close ALL&lt;/center&gt;"
+  },zgui.help.container)
+  zgui.help.closeAll:setClickCallback("zgui.closeAllWindows")
+
+---------------------------------------------------------
+-- Load Save Layout Buttons
+  zgui.help.load = Geyser.Label:new({
+    name="loadLayout",
+    x="1%",y="1%",
+    height="5%",width="33%",
+    nestable=true,
+    message="&lt;center&gt;Load&lt;/center&gt;"
+  },zgui.help.container)
+  
+  zgui.help.load.default = zgui.help.load:addChild({
+    name="loadDefaultLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Load DEFAULT Layout"
+  })  
+  zgui.help.load.default:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.load.default:setClickCallback("zgui.loadDefault")
+
+  zgui.help.load.combat = zgui.help.load:addChild({
+    name="loadCombatLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Load COMBAT Layout"
+  }) 
+  zgui.help.load.combat:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.load.combat:setClickCallback("zgui.loadCombat")
+
+  zgui.help.load.hunting = zgui.help.load:addChild({
+    name="loadHuntingLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Load HUNTING Layout"
+  }) 
+  zgui.help.load.hunting:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.load.hunting:setClickCallback("zgui.loadHunting")
+  
+  zgui.help.load.sailing = zgui.help.load:addChild({
+    name="loadSailingLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Load SAILING Layout"
+  })  
+  zgui.help.load.sailing:setStyleSheet(zgui.adjLabelstyle) 
+  zgui.help.load.sailing:setClickCallback("zgui.loadSailing")
+  
+  zgui.help.save = Geyser.Label:new({
+    name="saveLayout",
+    x="67%",y="1%",
+    height="5%",width="32%",
+    nestable=true,
+    message="&lt;center&gt;Save&lt;/center&gt;"
+  },zgui.help.container)
+
+  zgui.help.save.default = zgui.help.save:addChild({
+    name="saveDefaultLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Save DEFAULT Layout",
+  })  
+  zgui.help.save.default:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.save.default:setClickCallback("zgui.saveDefault")
+
+  zgui.help.save.combat = zgui.help.save:addChild({
+    name="saveCombatLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Save COMBAT Layout"
+  }) 
+  zgui.help.save.combat:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.save.combat:setClickCallback("zgui.saveCombat")
+
+  zgui.help.save.hunting = zgui.help.save:addChild({
+    name="saveHuntingLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Save HUNTING Layout"
+  }) 
+  zgui.help.save.hunting:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.save.hunting:setClickCallback("zgui.saveHunting")
+  
+  zgui.help.save.sailing = zgui.help.save:addChild({
+    name="saveSailingLayout",
+    x="1%",y="1%",
+    height=40,width=200,
+    layoutDir="BV",
+    flyOut=true,
+    message="Save SAILING Layout"
+  }) 
+  zgui.help.save.sailing:setStyleSheet(zgui.adjLabelstyle)
+  zgui.help.save.sailing:setClickCallback("zgui.saveSailing")
+    
   setFontSize("helpDisplay", zgui.helpSize)
   zgui.help.window:setTitle("Help","gray")
   zgui.help.window:show()  
@@ -5790,32 +5948,7 @@ end</script>
 					<script>function zgui.showHelp()
   --zgui.buildHelp()
   clearWindow("helpDisplay")
-
-  cecho("helpDisplay", "\n&lt;white&gt; -- Main Settings --")
-  
-  if zgui.darkmode then
-    cechoLink("helpDisplay", "\n&lt;green&gt;ON &lt;SteelBlue&gt; - Dark Mode", [[DarkThemeUninstall();zgui.showHelp()]], "Dark Mode Toggle", true)
-  else
-    cechoLink("helpDisplay", "\n&lt;red&gt;OFF&lt;SteelBlue&gt; - Dark Mode", [[DarkTheme();zgui.showHelp()]], "Dark Mode Toggle", true)
-  end
-  
-  cechoLink("helpDisplay", "\n&lt;white&gt;Borders: &lt;SteelBlue&gt;"..zgui.useStyle, [[zgui.styleSwap();zgui.showHelp()]], "Cycle Window Styles", true)
-  
-  cechoLink("helpDisplay", "\n&lt;white&gt;Click: &lt;SteelBlue&gt;Explore Map ", [[expandAlias("/explore-map")]], "Open Achaea Map in Browser", true)
-  
-  cecho("helpDisplay", "\n\n&lt;white&gt; -- Window Layout --")
-  cechoLink("helpDisplay", "\n&lt;white&gt;Close ALL Windows", [[Adjustable.Container.hideAll();zgui.showHelp()]], "Close All Windows", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Load: &lt;SteelBlue&gt;default", [[Adjustable.Container:loadAll("default");zgui.showHelp()]], "Load default window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Load: &lt;SteelBlue&gt;combat", [[Adjustable.Container:loadAll("combat");zgui.showHelp()]], "Load combat window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Load: &lt;SteelBlue&gt;hunting", [[Adjustable.Container:loadAll("hunting");zgui.showHelp()]], "Load hunting window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Load: &lt;SteelBlue&gt;sailing", [[Adjustable.Container:loadAll("sailing");zgui.showHelp()]], "Load sailing window layout", true)
-  cecho("helpDisplay", "\n&lt;white&gt; --")
-  cechoLink("helpDisplay", "\n&lt;white&gt;Save: &lt;SteelBlue&gt;default", [[Adjustable.Container:saveAll("default");zgui.showHelp()]], "Save default window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Save: &lt;SteelBlue&gt;combat", [[Adjustable.Container:saveAll("combat");zgui.showHelp()]], "Save combat window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Save: &lt;SteelBlue&gt;hunting", [[Adjustable.Container:saveAll("hunting");zgui.showHelp()]], "Save hunting window layout", true)
-  cechoLink("helpDisplay", "\n&lt;white&gt;Save: &lt;SteelBlue&gt;sailing", [[Adjustable.Container:saveAll("sailing");zgui.showHelp()]], "Save sailing window layout", true)
-        
-  cecho("helpDisplay", "\n\n&lt;white&gt; -- Installed Modules --")
+  cecho("helpDisplay", "\n&lt;white&gt; -- Installed Modules --")
   for i=1, #zgui.modules, 1 do
     if zgui.modules[i] ~= "Help" then
       if zgui[string.lower(zgui.modules[i])].window.hidden then
@@ -5827,25 +5960,65 @@ end</script>
   end    
 end
 registerAnonymousEventHandler("gmcp.Char.Vitals", "zgui.showHelp")
-
-function zgui.styleSwap()
-  local foundStyle = false 
-  for k,v in pairs(zgui.styles) do
-    if foundStyle then
-      zgui.useStyle = k
-      foundStyle = false
-    elseif zgui.useStyle == k then
-      foundStyle = true
-    end
-  end 
-  
-  if foundStyle then
-    for k,v in pairs(zgui.styles) do
-      zgui.useStyle = k
-      break;
-    end
-  end
+</script>
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>Help Click Callbacks</name>
+					<packageName></packageName>
+					<script>function zgui.styleSwap(style)
+  zgui.useStyle = style
   zgui.restyle()
+end
+
+function zgui.mapExplorer()
+  expandAlias("/explore-map")
+end
+
+function zgui.darkmodeToggle()
+  if zgui.darkmode then
+    DarkThemeUninstall()
+    expandAlias("zhelp")
+  else
+    DarkTheme()
+    expandAlias("zhelp")
+  end
+end
+
+function zgui.closeAllWindows()
+  Adjustable.Container.hideAll()
+end
+
+function zgui.loadDefault()
+  Adjustable.Container:loadAll("default")
+end
+
+function zgui.loadCombat()
+  Adjustable.Container:loadAll("combat")
+end
+
+function zgui.loadHunting()
+  Adjustable.Container:loadAll("hunting")
+end
+
+function zgui.loadSailing()
+  Adjustable.Container:loadAll("sailing")
+end
+
+function zgui.saveDefault()
+  Adjustable.Container:saveAll("default")
+end
+
+function zgui.saveCombat()
+  Adjustable.Container:saveAll("combat")
+end
+
+function zgui.saveHunting()
+  Adjustable.Container:saveAll("hunting")
+end
+
+function zgui.saveSailing()
+  Adjustable.Container:saveAll("sailing")
 end</script>
 					<eventHandlerList />
 				</Script>
