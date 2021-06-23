@@ -17,7 +17,11 @@
 zgui = zgui or {}
 
 function zgui.echo(text)
-	cecho("\n&lt;cyan&gt;[&lt;magenta&gt;zGui&lt;cyan&gt;]: &lt;NavajoWhite&gt;"..text)
+  if zgui.huntMode then
+    cecho("\n&lt;ansiCyan&gt;[ &lt;black&gt;zGui&lt;ansiCyan&gt; ]: &lt;NavajoWhite&gt;"..text)
+  else
+	  cecho("\n&lt;ansiCyan&gt;[ &lt;gray&gt;zGui&lt;ansiCyan&gt; ]: &lt;NavajoWhite&gt;"..text)
+  end
 end
 
 zgui.modules = zgui.modules or {}
@@ -33,6 +37,20 @@ zgui.styles = zgui.styles or {
     ["greydouble"] = "background-color:rgba(0,0,0,0%); border: 5px double grey;",
     ["greendouble"] = "background-color:rgba(0,0,0,50%); border: 5px double green;",    
     ["golddouble"] = "background-color:rgba(0,0,0,50%); border: 5px double gold;",
+}
+
+zgui.debug = false
+zgui.trueTime = 0
+
+zgui.vitals = {
+  h = 5000,
+ 	m = 5000,
+ 	maxh = 5000,
+ 	maxm = 5000,
+  oh = 5000, --old health
+  om = 5000, --old mana
+ 	xp = 0,
+  oxp = 0, --old xp
 }</script>
 			<eventHandlerList />
 			<ScriptGroup isActive="yes" isFolder="yes">
@@ -871,7 +889,6 @@ function zgui.zStartup()
   end   
 ----------------------------------------------------------------------------------------------------------------------------------------
     zgui.setupDefences() 
-    zgui.windows = "unknown"
     
     sendGMCP([[Core.Supports.Add ["Comm.Channel 1"] ]])
     sendGMCP('Core.Supports.Add ["IRE.Tasks 1"]')
@@ -902,31 +919,14 @@ function zgui.zStartup()
     if not table.contains(zgui.modules, "Ship") then table.insert(zgui.modules, "Ship") end 
     if not table.contains(zgui.modules, "Healthbar") then table.insert(zgui.modules, "Healthbar") end
     if not table.contains(zgui.modules, "Manabar") then table.insert(zgui.modules, "Manabar") end
-    
     if not table.contains(zgui.modules, "Help") then table.insert(zgui.modules, "Help") end
-    
     
     for i=1, #zgui.modules, 1 do
       zgui["build"..zgui.modules[i]]()
     end 
     
     ------------------------------------------------------------------------
-    zgui.debug = false
-    zgui.trueTime = 0
-
-	  zgui.vitals = {
- 		  h = 5000,
- 		  m = 5000,
- 		  maxh = 5000,
- 	 	  maxm = 5000,
-  		oh = 5000, --old health
-  		om = 5000, --old mana
- 	  	xp = 0,
-   		oxp = 0, --old xp
-	  }
-    
     zgui.myTargetList = zgui.myTargetList or {} 
-
 	  zgui.allies = zgui.allies or {}
 	  zgui.enemies = zgui.enemies or {}
   
@@ -941,7 +941,6 @@ function zgui.zStartup()
     Adjustable.Container.hideAll()
     zgui.buildHelp()
     Adjustable.Container:loadAll("default")
-    zgui.windows = "default"
     zgui.showHelp()
   end
 end</script>
@@ -3544,7 +3543,7 @@ end</script>
   clearWindow("roomDenizensDisplay")
   if zgui.roomDenizenList then
     for k,v in pairs(zgui.roomDenizenList) do
-      cecho("roomDenizensDisplay", " &lt;white&gt;"..zgui.roomDenizenList[k].."\n")
+      cecho("roomDenizensDisplay", " &lt;white&gt;"..zgui.roomDenizenList[k].." &lt;grey&gt;\("..k.."\)\n")
     end
   end  
 end</script>
@@ -5032,7 +5031,7 @@ end</script>
 				</Script>
 			</ScriptGroup>
 			<ScriptGroup isActive="yes" isFolder="yes">
-				<name>zTrade</name>
+				<name>Tradeskills</name>
 				<packageName></packageName>
 				<script>zTrade = zTrade or {}
 zTrade.harvestRooms = {}
@@ -5041,241 +5040,6 @@ function zTrade.echo(text)
 	cecho("\n&lt;cyan&gt;[&lt;magenta&gt;zTrade&lt;cyan&gt;]: &lt;NavajoWhite&gt;"..text)
 end</script>
 				<eventHandlerList />
-				<ScriptGroup isActive="yes" isFolder="yes">
-					<name>Conjuration</name>
-					<packageName></packageName>
-					<script>zTrade.conjuration = zTrade.conjuration or {}</script>
-					<eventHandlerList />
-					<Script isActive="yes" isFolder="no">
-						<name>zTrade.conjuration(amount, item)</name>
-						<packageName></packageName>
-						<script>function zTrade.conjuration.create(amount, item) 
----------------------------------------------------------------------
-  zTrade.conjuration.totalAmount = amount or 1                     -- Default 1 item
-  if amount &gt;=5 then zTrade.conjuration.totalAmount = 5 end        -- 5 Items max with Artifact
----------------------------------------------------------------------  
-  zTrade.conjuration.ouroboros1 = "ouroboros23502"                 -- Ouroboros for Commodities
-  zTrade.conjuration.ouroboros2 = "ouroboros57255"                 -- Ouroboros for Getting Items
----------------------------------------------------------------------  
-  zTrade.conjuration.created = zTrade.conjuration.created or {}    -- Empty Table For Items
----------------------------------------------------------------------
---           Create Arrays for Each Conjuration Item               --
---            Commodity Amounts - Actions and Counts               --
----------------------------------------------------------------------
-  zTrade.conjuration.created.worrystone = {                        -- Worrystone
-    {commodity="ice",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="gold",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="horn",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="dust",count=(1*zTrade.conjuration.totalAmount)},
-    {action="roll dice",count=5},
-    {action="flipcoin",count=5},
-    {action="spin around thrice",count=1},
-    {action="wave feather",count=1},
-    {action="square the circle",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.fist = {                              -- Fist Sigil
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="horn",count=(2*zTrade.conjuration.totalAmount)},
-    {action="chant fartak ishla spooz tran",count=3},
-    {action="ring bell",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.flame = {                             -- Flame Sigil
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant flet lhar abe minlo eec",count=3},
-    {action="ring bell",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.brooch = {                            -- Brooch of Thoth
-    {commodity="ice",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="dust",count=(2*zTrade.conjuration.totalAmount)},
-    {commodity="horn",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="silver",count=(2*zTrade.conjuration.totalAmount)},
-    {action="chant mortis troy tenkla",count=1},
-    {action="chant mortis troy tenklu",count=1},
-    {action="chant mortis troy tenkli",count=1},
-    {action="clap hands",count=3},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.key = {                               -- Key Sigil
-    {commodity="gold",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant krolop escit yall",count=3},
-    {action="ring bell",count=1},
-  }  
----------------------------------------------------------------------  
-  zTrade.conjuration.created.eye = {                               -- Eye Sigil
-    {commodity="obsidian",count=(1*zTrade.conjuration.totalAmount)},
-    {action="square the circle",count=1},
-    {action="ring bell",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.knife = {                             -- Knife Sigil
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant Keef nitash idca feef enla",count=3},
-    {action="ring bell",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.comprehension = {                     -- Necklace of Comprehension
-    {commodity="ice",count=(2*zTrade.conjuration.totalAmount)},
-    {commodity="gold",count=(3*zTrade.conjuration.totalAmount)},
-    {commodity="silver",count=(4*zTrade.conjuration.totalAmount)},
-    {commodity="horn",count=(3*zTrade.conjuration.totalAmount)},            
-    {action="play horn",count=3},
-    {action="burn incense",count=1},
-    {action="wave feather",count=1},
-    {action="ring bell",count=1},
-    {action="roll dice",count=2},
-    {action="spin around thrice",count=1},
-    {action="burn incense",count=1},
-    {action="crush kola",count=1},
-  }    
----------------------------------------------------------------------  
-  zTrade.conjuration.created.mushroom = {                          -- Mushroom Sigil
-    {commodity="ice",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant mil usra shal hract reed oom oon mez",count=3},
-    {action="ring bell",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.whirlwind = {                         -- Whirlwind of Vastar
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="dust",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="horn",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant mil usra shal hract reed oom oon mez",count=3},
-    {action="spin around thrice",count=4},
-    {action="wave feather",count=1},
-    {action="burn incense",count=1},
-    {action="spin around thrice",count=4},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.concealment = {                       -- Orb of Concealment
-    {commodity="silver",count=(5*zTrade.conjuration.totalAmount)},
-    {commodity="gold",count=(1*zTrade.conjuration.totalAmount)},
-    {action="wave feather",count=1},
-    {action="wave arms",count=1},
-    {action="flipcoin",count=1},
-    {action="play horn",count=1},
-    {action="point sword",count=1},
-    {action="clap hands",count=1},
-    {action="spin around thrice",count=1},
-    {action="chant aisyalam",count=1},
-    {action="spin around thrice",count=1},
-    {action="clap hands",count=1},
-    {action="point sword",count=1},
-    {action="play horn",count=1},
-    {action="flipcoin",count=1},
-    {action="wave arms",count=1},
-    {action="wave feather",count=1},
-  }
----------------------------------------------------------------------  
-  zTrade.conjuration.created.bauble = {                            -- Bauble
-    {commodity="dust",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant mil usra shal hract reed oom oon mez",count=3},
-    {action="crush kola",count=1},
-    {action="burn the polygon",count=1},
-    {action="clap hands",count=1},
-    {action="square the circle",count=1},
-    {action="chant disei stalla rapwah cosoth tu",count=1},
-  }        
----------------------------------------------------------------------  
-  zTrade.conjuration.created.monolith = {                          -- Monolith Sigil
-    {commodity="gold",count=(1*zTrade.conjuration.totalAmount)},
-    {commodity="silver",count=(1*zTrade.conjuration.totalAmount)},
-    {action="chant me ol nok oloth lilo ib te het",count=3},
-    {action="ring bell",count=1},
-  }      
----------------------------------------------------------------------
-
-
----------------------------------------------------------------------
-  zTrade.conjuration.created.allCommands = {
-    ["1"] = "ring bell",
-    ["2"] = "chant "..chantPhrase,
-    ["3"] = "bang drum",
-    ["4"] = "spin around thrice",
-    ["5"] = "light candle",
-    ["6"] = "clap hands",
-    ["7"] = "burn the polygon",
-    ["8"] = "point sword",
-    ["9"] = "burn incense",
-    ["10"] = "play horn",
-    ["11"] = "strum lute",
-    ["12"] = "flipcoin",
-    ["13"] = "roll dice",
-    ["14"] = "wave arms",
-    ["15"] = "crush kola",
-    ["16"] = "wave feather",
-    ["17"] = "square the circle"
-  }  
----------------------------------------------------------------------  
-  zTrade.conjuration.createCopy(zTrade.conjuration.totalAmount, item) 
-end</script>
-						<eventHandlerList />
-					</Script>
-					<Script isActive="yes" isFolder="no">
-						<name>zTrade.conjuration.createCopy(amount, item)</name>
-						<packageName></packageName>
-						<script>--
--- Example: zTrade.conjuration.createCopy(5, "worrystone")
---
-function zTrade.conjuration.createCopy(amount, item)
-  zTrade.conjuration.ready = false
-  zTrade.conjuration.tempTable = {}
-  zTrade.conjuration.tempTable = table.deepcopy(zTrade.conjuration.created[item])
-  local itemNameConvert = {
-	  ["eye"] = "eye sigil",
-  }
-  zTrade.conjuration.craftedItem = "" 
-  if table.contains(itemNameConvert, item) then
-	  zTrade.conjuration.craftedItem = itemNameConvert[item]
-	else
-	 	zTrade.conjuration.craftedItem = item
-	end
-  function zTrade.conjuration.runConjurationCommodities()
-    if conjurationtempTriggerCommodities then killTrigger(conjurationtempTriggerCommodities) end
-    if not table.contains(zTrade.conjuration.tempTable, "commodity") then
-      if conjurationtempTriggerActions then killTrigger(conjurationtempTriggerActions) end
-      send("begin creation of "..amount.." "..zTrade.conjuration.craftedItem)
-      zTrade.conjuration.runConjurationActions()
-    end
-    if table.contains(zTrade.conjuration.tempTable, "commodity") then    
-      for i,v in ipairs(zTrade.conjuration.tempTable) do
-        if v["commodity"] and v["count"] &gt; 0 then
-          send("outr "..v["count"].." "..v["commodity"])
-          send("put "..v["count"].." "..v["commodity"].." in "..zTrade.conjuration.ouroboros1)
-          if v["count"] &gt; 1 then
-            table.remove(zTrade.conjuration.tempTable, 1)
-            conjurationtempTriggerCommodities = tempTrigger("balance", [[zTrade.conjuration.runConjurationCommodities()]], 1)
-          else
-            table.remove(zTrade.conjuration.tempTable, 1)
-            zTrade.conjuration.runConjurationCommodities()
-          end
-        end
-      end
-    end
-  end
-  zTrade.conjuration.runConjurationCommodities()
-  function zTrade.conjuration.runConjurationActions()
-    if #zTrade.conjuration.tempTable &lt; 1 then
-      send("end ritual")
-    end
-    for i,v in ipairs(zTrade.conjuration.tempTable) do
-      if v["count"] and v["count"] &gt; 0 then
-        send(v["action"])
-        v["count"] = v["count"] -1
-        if v["count"] == 0 then
-          table.remove(zTrade.conjuration.tempTable, 1)
-        end
-        conjurationtempTriggerActions = tempTrigger("balance", [[zTrade.conjuration.runConjurationActions()]], 1)
-        break
-      end
-    end
-  end
-end</script>
-						<eventHandlerList />
-					</Script>
-				</ScriptGroup>
 				<ScriptGroup isActive="yes" isFolder="yes">
 					<name>Harvesting</name>
 					<packageName></packageName>
@@ -5744,7 +5508,7 @@ end</script>
     name = "zgui.help.window",
     x = 0, y = 0,
     width = "25%",
-    height = "70%",  
+    height = "70%",   
     adjLabelstyle = zgui.adjLabelstyle,
     buttonstyle=[[
       QLabel{ border-radius: 5px; background-color: rgba(140,140,140,100%);}
