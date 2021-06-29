@@ -5709,16 +5709,25 @@ end</script>
 				<Script isActive="yes" isFolder="no">
 					<name>showHelp</name>
 					<packageName></packageName>
-					<script>function zgui.showHelp()
+					<script>function zgui.unTitle(str)
+    local buf = {}
+    for word in string.gmatch(str, "%S+") do          
+        local first, rest = string.sub(word, 1, 1), string.sub(word, 2)
+        table.insert(buf, string.lower(first) .. rest)
+    end  
+    return table.concat(buf, " ")
+end
+
+function zgui.showHelp()
   --zgui.buildHelp()
   clearWindow("helpDisplay")
   cecho("helpDisplay", "\n&lt;white&gt; -- Installed Modules --")
   for i=1, #zgui.modules, 1 do
     if zgui.modules[i] ~= "Help" then
-      if zgui[string.lower(zgui.modules[i])].window.hidden then
+      if zgui[zgui.unTitle(zgui.modules[i])].window.hidden then
         cechoLink("helpDisplay", "\n&lt;red&gt;OFF&lt;SteelBlue&gt; - "..zgui.modules[i], [[zgui.build]]..zgui.modules[i]..[[();zgui.showHelp()]], "Turn Off", true)
       else
-        cechoLink("helpDisplay", "\n&lt;green&gt;ON &lt;SteelBlue&gt; - "..zgui.modules[i], [[zgui.]]..string.lower(zgui.modules[i])..[[.window.hidden="true";zgui.]]..string.lower(zgui.modules[i])..[[.window:hide();zgui.showHelp()]], "Turn On", true)
+        cechoLink("helpDisplay", "\n&lt;green&gt;ON &lt;SteelBlue&gt; - "..zgui.modules[i], [[zgui.]]..zgui.unTitle(zgui.modules[i])..[[.window.hidden="true";zgui.]]..zgui.unTitle(zgui.modules[i])..[[.window:hide();zgui.showHelp()]], "Turn On", true)
       end
     end
   end    
